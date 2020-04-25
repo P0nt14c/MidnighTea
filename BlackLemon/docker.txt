@@ -1,0 +1,22 @@
+#!/bin/bash
+port1 = "2376"
+port2 = "2377"
+port3 = "7946"
+port4 = "4789"
+
+tcp_ports = "$port1 $port2 $port3"
+for port in $tcp_ports
+do
+iptables -A INPUT -p tcp --dport $port -j ACCEPT
+iptables -A OUTPUT -p tcp --sport $port -m state --state ESTABLISHED,RELATED -j ACCEPT
+done
+
+udp_ports = "$port3 $port4"
+for port in $udp_ports
+do
+iptables -A INPUT -p tcp --dport $port -j ACCEPT
+iptables -A OUTPUT -p tcp --spot $port -m --state ESTABLISHED,RELATED -j ACCE{T
+done
+
+#Test rules (comment line below to put rules in place)
+sleep 5 && ip -F
