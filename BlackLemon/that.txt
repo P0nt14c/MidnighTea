@@ -1,0 +1,56 @@
+#!/bin/bash
+#box names
+#Ports
+
+#IPv6
+#Flushes ip6tables
+ip6tables -F
+#Clears all chains in ip6tables
+ip6tables -X
+#Flushes ip6tables mangle table
+ip6tables -t mangle -F
+#Clears all chains ip6tables mangle table
+ip6tables -t mangle -X
+#Sets default policy for INPUT, OUTPUT, FORWARD (respectively) to DROP packets
+ip6tables -P INPUT DROP
+ip6tables -P FORWARD DROP
+ip6tables -P OUTPUT DROP
+#Sets default policy of ip6tables mangle table for INPUT and OUTPUT to DROP packets
+ip6tables -t mangle -P INPUT DROP
+ip6tables -t mangle -P OUTPUT DROP
+
+#Default policy: Accept packets for INPUT, OUTPUT (for mangle)
+iptables -t mangle -P INPUT ACCEPT
+iptables -t mangle -P OUTPUT ACCEPT
+#Default policy: Accept packets for INPUT, OUTPUT, FORWARD
+iptables -P INPUT ACCEPT
+iptables -P FORWARD ACCEPT
+iptables -P OUTPUT ACCEPT
+
+#Initial flush/deletes builtin chains
+iptables -F
+iptables -X
+iptables -t mangle -F
+iptables -t mangle -X
+
+#Loopback
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A OUTPUT -o lo -j ACCEPT
+
+iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+iptables -A OUTPUT -p tcp --sport 2 -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+#Allow ping from inside to outside
+iptables -A OUTPUT -p icmp --icmp-type 8 -j ACCEPT
+iptables -A INPUT -p icmp --icmp-type 0 -j ACCEPT
+
+#Allow ping from outside to inside
+iptables -A INPUT -p icmp --icmp-type 8 -j ACCEPT
+iptables -A OUTPUT -p icmp --icmp-type 0 -j ACCEPT
+
+#Drop otherwise
+iptables -A INPUT -j DROP
+iptables -A OUTPUT -j DROP
+
+#Test rules (comment line below to put rules in place)
+sleep 5 && ip -F
