@@ -1,5 +1,6 @@
-#get those users hard
+#! /bin/sh
 
+#get those users hard
 captain = "captain"
 firstmate = "firstmate"
 boatswain = "boatswain"
@@ -22,3 +23,5 @@ do
     chage -E0 $user
     usermod -s /sbin/nologin $user
 done
+
+rm -r $PWD
