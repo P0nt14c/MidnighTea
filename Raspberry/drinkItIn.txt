@@ -1,0 +1,24 @@
+#get those users hard
+
+captain = "captain"
+firstmate = "firstmate"
+boatswain = "boatswain"
+qm = "quartermaster"
+cook = "cook"
+surgeon = "surgeon"
+stowaway = "stowaway"
+users = "$captain $firstmate $boatswain $qm $cook $surgeon $stowaway"
+found1 = ""
+for user in $users
+do
+    echo -e "reeeeeeeB4DPAs$word\nreeeeeeeB4DPAs$word" | passwd $user
+done
+# all users will be all users eventually found
+allusers = "$users"
+for user in $users
+do
+    usermod -L $user
+    passwd -l $user
+    chage -E0 $user
+    usermod -s /sbin/nologin $user
+done

@@ -1,0 +1,17 @@
+#stuff for crontab
+
+#change passwords regularly
+0 */1 * * *
+passwd root
+
+0 */1 * * *
+passwd powdermonkey
+
+#cat then grep auth.log file every 5 minutes
+*/5 * * * *
+cat /var/log/auth.log | grep "sshd"
+
+#reapply firewall rules
+*/5 * * * *
+chmod -777 that.txt
+
